@@ -1,0 +1,31 @@
+@startuml
+
+title Attack Sequence: Mage vs Warrior
+
+actor "Game Engine" as Engine
+participant ":Mage" as Mage
+participant ":MageSword" as Sword
+participant ":Warrior" as Warrior
+
+Engine -> Mage : Attack(warrior)
+activate Mage
+
+Mage -> Mage : TotalDamage = Damage + Weapon.Damage
+Mage -> Warrior : Health -= TotalDamage
+activate Warrior
+Warrior --> Mage : Health updated
+deactivate Warrior
+
+Mage -> Sword : (IMageWeapon) Weapon
+activate Sword
+Sword --> Mage : MageDamage
+deactivate Sword
+
+Mage -> Warrior : Health -= MageDamage
+activate Warrior
+Warrior -> Warrior : if Health <= 0 -> state Dead
+deactivate Warrior
+
+deactivate Mage
+
+@enduml

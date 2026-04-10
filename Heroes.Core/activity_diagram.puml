@@ -1,0 +1,39 @@
+@startuml
+
+title Attack Process (HeroBase.Attack + Special Attack)
+
+start
+
+:Attacker calls Attack(enemy);
+
+if (Attacker is Mage?) then (yes)
+    :Calculate base damage:
+    TotalDamage = Damage + Weapon.Damage;
+    :Enemy.Health -= TotalDamage;
+    :Cast Weapon to IMageWeapon;
+    :MageDamage = weapon.MageDamage;
+    :Enemy.Health -= MageDamage;
+else (no)
+    if (Attacker is Warrior?) then (yes)
+        :Calculate base damage:
+        TotalDamage = Damage + Weapon.Damage;
+        :Enemy.Health -= TotalDamage;
+        :Cast Weapon to IPhysicalWeapon;
+        :PhysicalDamage = weapon.PhysicalDamage;
+        :Enemy.Health -= PhysicalDamage;
+    else (no)
+        :Perform only base attack
+        (if any other subclass);
+    endif
+endif
+
+:Check enemy Health;
+if (Enemy.Health <= 0?) then (yes)
+    :Enemy state becomes Dead;
+else (no)
+    :Enemy remains Alive;
+endif
+
+stop
+
+@enduml

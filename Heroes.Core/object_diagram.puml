@@ -1,0 +1,32 @@
+@startuml
+
+title Object Diagram: Example Characters
+
+object "Gandalf : Mage" as mage {
+    Name = "Gandalf"
+    Health = 100
+    Damage = 15
+}
+
+object "Staff : MageSword" as staff {
+    Name = "Wizard Staff"
+    Damage = 5
+    MageDamage = 20
+}
+
+object "Aragorn : Warrior" as warrior {
+    Name = "Aragorn"
+    Health = 120
+    Damage = 20
+}
+
+object "Sword : PhysicalSword" as sword {
+    Name = "Anduril"
+    Damage = 10
+    PhysicalDamage = 15
+}
+
+mage -> staff : Weapon
+warrior -> sword : Weapon
+
+@enduml

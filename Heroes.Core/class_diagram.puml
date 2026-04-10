@@ -1,0 +1,108 @@
+@startuml
+
+namespace Heroes.Core {
+    interface IAttack {
+        + Attack(enemy: Person) : void
+    }
+
+    abstract class Person {
+        + {required} Name : string <<get, init>>
+    }
+
+    enum HeroState {
+        ALIVE
+        DEAD
+    }
+}
+
+namespace Heroes.Core.Heroes {
+    interface IMage {
+        + MagicAttack(enemy: Person) : void
+    }
+
+    interface IWarrior {
+        + PhysicalAttack(enemy: Person) : void
+    }
+
+    abstract class HeroBase {
+        + {abstract} Weapon : WeaponBase? <<get, set>>
+        + Health : int <<get, set>>
+        + Damage : int <<get, init>>
+        + IsAlive : bool <<get>>
+        + IsDead : bool <<get>>
+        # TotalDamage : int <<get>>
+        + Attack(enemy: Person) : void
+    }
+
+    class Mage {
+        + Weapon : WeaponBase? <<override>>
+        + Attack(enemy: Person) : void <<override>>
+        + MagicAttack(enemy: Person) : void
+    }
+
+    class Warrior {
+        + Weapon : WeaponBase? <<override>>
+        + Attack(enemy: Person) : void <<override>>
+        + PhysicalAttack(enemy: Person) : void
+    }
+
+    class HeroFactory {
+        + {static} CreateMage(name: string, health: int, damage: int) : HeroBase
+        + {static} CreateWarrior(name: string, health: int, damage: int) : HeroBase
+    }
+}
+
+namespace Heroes.Core.Weapons {
+    interface IMageWeapon {
+        + MageDamage : int <<get>>
+    }
+
+    interface IPhysicalWeapon {
+        + PhysicalDamage : int <<get, init>>
+    }
+
+    abstract class WeaponBase {
+        + {required} Name : string <<get, init>>
+        + Damage : int <<get, init>>
+    }
+
+    class MageSword {
+        + MageDamage : int <<get, init>>
+    }
+
+    class PhysicalSword {
+        + PhysicalDamage : int <<get, init>>
+    }
+
+    class WeaponFactory {
+        + {static} CreateMageSword(name: string, damage: int, mageDamage: int) : WeaponBase
+        + {static} CreateWarriorSword(name: string, damage: int, warriorDamage: int) : WeaponBase
+    }
+}
+
+' Наследование и реализации
+Person <|-- HeroBase
+HeroBase <|-- Mage
+HeroBase <|-- Warrior
+
+IAttack <|.. HeroBase
+IMage <|.. Mage
+IWarrior <|.. Warrior
+
+WeaponBase <|-- MageSword
+WeaponBase <|-- PhysicalSword
+IMageWeapon <|.. MageSword
+IPhysicalWeapon <|.. PhysicalSword
+
+' Ассоциации
+HeroBase o--> WeaponBase : Weapon
+HeroFactory ..> Mage : creates
+HeroFactory ..> Warrior : creates
+WeaponFactory ..> MageSword : creates
+WeaponFactory ..> PhysicalSword : creates
+
+' Зависимости в методах
+Mage ..> IMageWeapon : «cast»
+Warrior ..> IPhysicalWeapon : «cast»
+
+@enduml

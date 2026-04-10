@@ -1,0 +1,34 @@
+@startuml
+
+package "Heroes.Core" as Core {
+    component [IAttack] <<interface>>
+    component [Person]
+}
+
+package "Heroes.Core.Heroes" as Heroes {
+    component [HeroBase]
+    component [Mage]
+    component [Warrior]
+    component [HeroFactory]
+}
+
+package "Heroes.Core.Weapons" as Weapons {
+    component [WeaponBase]
+    component [MageSword]
+    component [PhysicalSword]
+    component [WeaponFactory]
+}
+
+Heroes ..> Core : depends on
+Weapons ..> Core : depends on
+Heroes ..> Weapons : uses
+
+Mage ..|> HeroBase
+Warrior ..|> HeroBase
+HeroBase ..|> Person
+HeroBase ..|> IAttack
+
+MageSword --|> WeaponBase
+PhysicalSword --|> WeaponBase
+
+@enduml

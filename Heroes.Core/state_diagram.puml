@@ -1,0 +1,19 @@
+@startuml
+
+state "Alive" as Alive
+state "Dead" as Dead
+
+[*] --> Alive : Create hero
+
+Alive : entry / IsAlive = true
+Alive : do / Can attack, be attacked
+Alive : Health > 0
+
+Dead : entry / IsAlive = false, IsDead = true
+Dead : Cannot act
+
+Alive --> Dead : Health <= 0 (after taking damage)
+
+Dead --> [*]
+
+@enduml
